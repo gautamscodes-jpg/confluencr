@@ -1,0 +1,575 @@
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif; /* Using Inter as a modern sans-serif font */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #000;
+  color: #fff;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.App {
+  text-align: center;
+  width: 100vw;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background-color: #000;
+  color: #fff;
+  border-bottom: 1px solid #1a1a1a; /* Darker border */
+}
+
+.header .logo {
+  font-size: 24px;
+  font-weight: 700; /* Bold */
+color: #00c896; /* confluencr green */
+}
+
+.navigation a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 15px;
+  font-size: 16px;
+  font-weight: 500; /* Medium weight */
+  transition: color 0.3s ease;
+}
+
+.navigation a:hover {
+  color: #00c896; /* Green on hover */
+}
+
+.talk-to-us-button {
+  background-color: #00c896;
+  color: #000;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600; /* Semi-bold */
+  margin-left: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.talk-to-us-button:hover {
+  background-color: #00a37a; /* Darker green on hover */
+}
+
+/* Remove old hero section styles */
+.hero-section {
+  display: none; /* Hide the old hero section */
+}
+
+.new-body-section {
+  background-color: #000;
+  color: #fff;
+  padding: 100px 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 500px;
+  position: relative;
+  overflow: hidden;
+  gap: 50px; /* Space between text and video */
+}
+
+.new-body-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to right, #1a1a1a 1px, transparent 1px), linear-gradient(to bottom, #1a1a1a 1px, transparent 1px);
+  background-size: 40px 40px; /* Adjusted grid size */
+  opacity: 0.1; /* Further reduced opacity for a more subtle look */
+  z-index: 0;
+}
+
+.new-body-content {
+  position: relative;
+  z-index: 1;
+  text-align: left;
+  max-width: 500px;
+}
+
+.new-body-title {
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.new-body-title .highlight {
+  color: #00c896;
+}
+
+.new-body-description {
+  font-size: 18px;
+  margin-bottom: 40px;
+  line-height: 1.5;
+  color: #ccc;
+}
+
+.video-player-container {
+  position: relative;
+  z-index: 1;
+  width: 600px; /* Adjust as needed */
+  height: 350px; /* Adjust as needed */
+  background-color: #1a1a1a;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.video-placeholder {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.video-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.play-button {
+  position: absolute;
+  font-size: 60px;
+  color: #ff0000; /* YouTube red */
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Responsive adjustments for new body section */
+@media (max-width: 1024px) {
+  .new-body-section {
+    flex-direction: column;
+    text-align: center;
+    padding: 50px 20px;
+  }
+
+  .new-body-content {
+    max-width: 100%;
+    margin-bottom: 40px;
+  }
+
+  .new-body-title {
+    font-size: 38px;
+  }
+
+  .new-body-description {
+    font-size: 16px;
+  }
+
+  .video-player-container {
+    width: 100%;
+    height: 250px;
+  }
+}
+
+.hero-logo {
+  font-size: 72px; /* Larger font size */
+  font-weight: 800; /* Extra bold */
+  margin-bottom: 20px;
+  color: #00c896; /* confluencr green */
+}
+
+.hero-tagline {
+  font-size: 28px; /* Larger font size */
+  margin-bottom: 40px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.4; /* Improved readability */
+}
+
+.get-started-button {
+  background-color: #00c896;
+  color: #000;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 700; /* Bold */
+  transition: background-color 0.3s ease;
+}
+
+.get-started-button:hover {
+  background-color: #00a37a; /* Darker green on hover */
+}
+
+.companies-section {
+  background-color: #000;
+  color: #fff;
+  padding: 80px 50px; /* More padding */
+  border-top: 1px solid #1a1a1a;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.companies-text {
+  font-size: 14px;
+  color: #888; /* Lighter grey */
+  margin-bottom: 40px; /* More margin */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.company-logos {
+  display: flex;
+  justify-content: center;
+  gap: 60px; /* More gap */
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.company-logo {
+  font-size: 32px; /* Larger font size */
+  font-weight: 700; /* Bold */
+  color: #fff;
+  background-color: #1a1a1a; /* Darker background */
+  padding: 25px 50px; /* More padding */
+  border-radius: 8px; /* Slightly less rounded */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 80px 50px; /* More padding */
+  background-color: #000;
+  color: #fff;
+  text-align: left;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.footer-left {
+  flex: 1;
+  margin-right: 50px;
+  min-width: 300px; /* Minimum width for left section */
+}
+
+.footer-logo {
+  font-size: 36px;
+  font-weight: 700; /* Bold */
+  margin-bottom: 20px;
+  color: #00c896; /* confluencr green */
+}
+
+.footer-tagline {
+  font-size: 16px;
+  margin-bottom: 30px;
+  max-width: 400px;
+  line-height: 1.5;
+  color: #ccc; /* Lighter text */
+}
+
+.social-links {
+  margin-bottom: 30px;
+  display: flex;
+  gap: 10px;
+}
+
+.social-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  background-color: #1a1a1a; /* Darker background */
+  color: #fff;
+  border-radius: 50%;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.social-icon:hover {
+  background-color: #00c896; /* Green on hover */
+}
+
+.contact-us-button {
+  background-color: transparent;
+  color: #00c896;
+  border: 1px solid #00c896;
+  padding: 12px 25px; /* More padding */
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600; /* Semi-bold */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.contact-us-button:hover {
+  background-color: #00c896;
+  color: #000;
+}
+
+.footer-right {
+  flex: 1;
+  min-width: 300px; /* Minimum width for right section */
+}
+
+.stay-up-to-date {
+  font-size: 24px;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.newsletter-text {
+  font-size: 16px;
+  margin-bottom: 20px;
+  line-height: 1.5;
+  color: #ccc;
+}
+
+.newsletter-form {
+  margin-bottom: 20px;
+}
+
+.newsletter-label {
+  display: block;
+  font-size: 14px;
+  color: #00c896;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.email-input {
+  width: calc(100% - 22px);
+  padding: 12px;
+  margin-bottom: 15px; /* More margin */
+  background-color: #1a1a1a; /* Darker background */
+  border: 1px solid #333;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+}
+
+.subscribe-button {
+  background-color: #00c896;
+  color: #000;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600; /* Semi-bold */
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.subscribe-button:hover {
+  background-color: #00a37a; /* Darker green on hover */
+}
+
+.privacy-text {
+  font-size: 12px;
+  color: #888;
+  line-height: 1.4;
+  text-align: left;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .navigation {
+    margin-top: 20px;
+  }
+
+  .hero-logo {
+    font-size: 50px;
+  }
+
+  .hero-tagline {
+    font-size: 22px;
+  }
+
+  .company-logos {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .footer {
+    flex-direction: column;
+    padding: 50px 20px;
+  }
+
+  .footer-left {
+    margin-right: 0;
+    margin-bottom: 40px;
+  }
+
+  .footer-right {
+    text-align: center;
+  }
+
+  .newsletter-label,
+  .privacy-text {
+    text-align: center;
+  }
+}
+
+.grid-background {
+  /* width: 100%; */
+  /* height: 300px; adjust as needed */
+  /* background-color: #f0f0f0; */
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px; /* grid cell size */
+}
+
+
+
+.charts-section {
+  background-color: #000;
+  color: #fff;
+  padding: 80px 50px;
+  border-top: 1px solid #1a1a1a;
+  border-bottom: 1px solid #1a1a1a;
+}
+
+.charts-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+}
+
+.charts-container > div {
+  background-color: #1a1a1a;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  flex: 1;
+  min-width: 350px;
+  max-width: 500px;
+  text-align: center;
+}
+
+.charts-container h3 {
+  color: #00c896;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.chart-editor form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.chart-editor input[type="email"],
+.chart-editor input[type="number"] {
+  padding: 12px;
+  border: 1px solid #333;
+  border-radius: 5px;
+  background-color: #0d0d0d;
+  color: #fff;
+  font-size: 16px;
+}
+
+.chart-editor input::placeholder {
+  color: #888;
+}
+
+.chart-editor button {
+  background-color: #00c896;
+  color: #000;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.chart-editor button:hover {
+  background-color: #00a37a;
+}
+
+.chart-editor p {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+h3 {
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.editor-container {
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: #f0f2f5;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.chart-editor h3 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.chart-editor form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.chart-editor input[type="email"],
+.chart-editor textarea {
+  flex-grow: 1;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.chart-editor button {
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.chart-editor button:hover {
+  background-color: #0056b3;
+}
+
+.chart-editor p {
+  margin-top: 1rem;
+  font-style: italic;
+  color: #555;
+}
