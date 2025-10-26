@@ -93,7 +93,7 @@ const ChartDataEditor: React.FC<ChartDataEditorProps> = ({ chartName, initialDat
               id="userEmail"
               value={userEmail || ''}
               onChange={(e) => setUserEmail(e.target.value)}
-              placeholder="Enter your email to customize charts"
+              placeholder="Enter your email"
             />
           </div>
       </div>
@@ -115,12 +115,13 @@ const ChartDataEditor: React.FC<ChartDataEditorProps> = ({ chartName, initialDat
 
       <h3>Customize {chartName}</h3>
       <textarea
+      style={{width:"250px"}}
         value={customValues}
         onChange={(e) => setCustomValues(e.target.value)}
         rows={10}
         cols={50}
       />
-      <button onClick={handleSaveValues}>Save Custom Values</button>
+      <button className="bg-[]" style={{backgroundColor:"#00c896"}} onClick={handleSaveValues}>Save Custom Values</button>
       {message && <p>{message}</p>}
     </div>
   );

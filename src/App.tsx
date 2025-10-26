@@ -9,10 +9,10 @@ const initialSadPathData = [
   { name: "Customer Hostility", value: 200 },
   { name: "Assistant did not speak French", value: 300 },
   { name: "Unsupported Language", value: 150 },
-  { name: "Assistant did not speak Spanish", value: 250 },
+  // { name: "Assistant did not speak Spanish", value: 250 },
   { name: "User refused to confirm identity", value: 100 },
-  { name: "Caller Identification", value: 120 },
-  { name: "Incorrect caller identity", value: 80 },
+  // { name: "Caller Identification", value: 120 },
+  // { name: "Incorrect caller identity", value: 80 },
 ];
 
 function App() {
