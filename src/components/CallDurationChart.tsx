@@ -13,7 +13,7 @@ const data = [
 
 const CallDurationChart: React.FC = () => {
   return (
-    <div style={{ width: '100%', height: 500 }}>
+    <div style={{ width: '100%', height: 300 }}>
       <h3>Call Duration Analysis</h3>
       <ResponsiveContainer>
         <AreaChart
