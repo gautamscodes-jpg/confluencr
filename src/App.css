@@ -469,7 +469,7 @@ color: #00c896; /* confluencr green */
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   flex: 1;
   min-width: 350px;
-  max-width: 500px;
+  max-width: 300px;
   text-align: center;
 }
 
