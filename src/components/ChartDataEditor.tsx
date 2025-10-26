@@ -6,23 +6,18 @@ interface ChartDataEditorProps {
   initialData: any[];
   onDataChange: (newData: any[]) => void;
   userEmail: string | null;
-  setUserEmail: string | null;
+  setUserEmail: (email: string | null) => void;
 
 }
 
 const ChartDataEditor: React.FC<ChartDataEditorProps> = ({ chartName, initialData, onDataChange, userEmail, setUserEmail }) => {
-  const [isEmailSubmitted, setIsEmailSubmitted] = useState<boolean>(false);
   const [customValues, setCustomValues] = useState<string>(JSON.stringify(initialData, null, 2));
-  const [previousValues, setPreviousValues] = useState<string | null>(null);
   const [message, setMessage] = useState<string>('');
 
   useEffect(() => {
     if (userEmail) {
-      setIsEmailSubmitted(true);
       loadCustomValues(userEmail);
     } else {
-      setIsEmailSubmitted(false);
-      setPreviousValues(null);
       setMessage('');
     }
   }, [userEmail]);
@@ -39,10 +34,8 @@ const ChartDataEditor: React.FC<ChartDataEditorProps> = ({ chartName, initialDat
       console.error('Error loading custom values:', error);
       setMessage('Error loading previous data.');
     } else if (data) {
-      setPreviousValues(JSON.stringify(data.values, null, 2));
       setMessage('Previous custom values loaded. Do you want to overwrite?');
     } else {
-      setPreviousValues(null);
       setMessage('No previous custom values found for this email.');
     }
   };
@@ -83,15 +76,10 @@ const ChartDataEditor: React.FC<ChartDataEditorProps> = ({ chartName, initialDat
         setMessage('Custom values saved successfully!');
       }
       onDataChange(parsedValues);
-      setPreviousValues(customValues);
     } catch (error: any) {
       console.error('Error saving custom values:', error.message);
       setMessage(`Error saving values: ${error.message}`);
     }
-  };
-
-  const handleOverwriteConfirm = () => {
-    handleSaveValues();
   };
 
   if (!userEmail) {
@@ -134,13 +122,6 @@ const ChartDataEditor: React.FC<ChartDataEditorProps> = ({ chartName, initialDat
       />
       <button onClick={handleSaveValues}>Save Custom Values</button>
       {message && <p>{message}</p>}
-      {/* {previousValues && previousValues !== customValues && (
-        <div>
-          <p>Previous values:</p>
-          <textarea value={previousValues} rows={5} cols={50} readOnly />
-          <button onClick={handleOverwriteConfirm}>Confirm Overwrite</button>
-        </div>
-      )} */}
     </div>
   );
 };

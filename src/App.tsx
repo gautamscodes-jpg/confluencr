@@ -1,5 +1,5 @@
 import './App.css';
-import { useState, useEffect, useCallback } from 'react'
+import { useState } from 'react'
 import { supabase } from './supabaseClient';
 
 import CallDurationChart from './components/CallDurationChart';
