@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
+import React, { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
 
 interface ChartDataEditorProps {
   chartName: string;
@@ -10,119 +10,149 @@ interface ChartDataEditorProps {
 
 }
 
-const ChartDataEditor: React.FC<ChartDataEditorProps> = ({ chartName, initialData, onDataChange, userEmail, setUserEmail }) => {
-  const [customValues, setCustomValues] = useState<string>(JSON.stringify(initialData, null, 2));
-  const [message, setMessage] = useState<string>('');
+const ChartDataEditor: React.FC<ChartDataEditorProps> = ({
+  chartName,
+  initialData,
+  onDataChange,
+  userEmail,
+  setUserEmail,
+}) => {
+  const [editorData, setEditorData] = useState(initialData);
+  const [currentEmailInput, setCurrentEmailInput] = useState(userEmail || "");
 
   useEffect(() => {
-    if (userEmail) {
-      loadCustomValues(userEmail);
-    } else {
-      setMessage('');
-    }
+    setEditorData(initialData);
+  }, [initialData]);
+
+  useEffect(() => {
+    setCurrentEmailInput(userEmail || "");
   }, [userEmail]);
 
-  const loadCustomValues = async (email: string) => {
-    const { data, error } = await supabase
-      .from('chart_data')
-      .select('values')
-      .eq('email', email)
-      .eq('chart_name', chartName)
-      .single();
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (userEmail) {
+        const { data, error } = await supabase
+          .from("chart_data")
+          .select("values") // Corrected column name
+          .eq("email", userEmail)
+          .single();
 
-    if (error && error.code !== 'PGRST116') { // PGRST116 means no rows found
-      console.error('Error loading custom values:', error);
-      setMessage('Error loading previous data.');
-    } else if (data) {
-      setMessage('Previous custom values loaded. Do you want to overwrite?');
-    } else {
-      setMessage('No previous custom values found for this email.');
-    }
+        if (error && error.code !== 'PGRST116') { // PGRST116 means no rows found
+          console.error("Error fetching user data:", error.message);
+          onDataChange(initialData); // Reset to initial data on error or no data
+        } else if (data) {
+          onDataChange(data.values); // Corrected data access
+        } else {
+          onDataChange(initialData); // Reset to initial data if no data found
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [userEmail, onDataChange, initialData]);
+
+  const handleAddRow = () => {
+    setEditorData([...editorData, { name: "", value: 0 }]);
   };
 
-  const handleSaveValues = async () => {
-    if (!userEmail) {
-      setMessage('Please enter your email first.');
-      return;
-    }
-    try {
-      const parsedValues = JSON.parse(customValues);
-      const { data: existingData, error: existingError } = await supabase
-        .from('chart_data')
-        .select('id')
-        .eq('email', userEmail)
-        .eq('chart_name', chartName)
-        .single();
-
-      if (existingError && existingError.code !== 'PGRST116') {
-        throw existingError;
-      }
-
-      if (existingData) {
-        // Update existing record
-        const { error } = await supabase
-          .from('chart_data')
-          .update({ values: parsedValues })
-          .eq('email', userEmail)
-          .eq('chart_name', chartName);
-        if (error) throw error;
-        setMessage('Custom values updated successfully!');
-      } else {
-        // Insert new record
-        const { error } = await supabase
-          .from('chart_data')
-          .insert([{ email: userEmail, chart_name: chartName, values: parsedValues }]);
-        if (error) throw error;
-        setMessage('Custom values saved successfully!');
-      }
-      onDataChange(parsedValues);
-    } catch (error: any) {
-      console.error('Error saving custom values:', error.message);
-      setMessage(`Error saving values: ${error.message}`);
-    }
+  const handleRemoveRow = (index: number) => {
+    const newData = editorData.filter((_, i) => i !== index);
+    setEditorData(newData);
+    onDataChange(newData);
   };
 
-  if (!userEmail) {
-    return (
-      <div className="chart-editor">
-        <h3>Please enter your email in the field above to customize {chartName}</h3>
-        <div className="email-input-container">
-            <label htmlFor="userEmail">Your Email:</label>
-            <input
-              type="email"
-              id="userEmail"
-              value={userEmail || ''}
-              onChange={(e) => setUserEmail(e.target.value)}
-              placeholder="Enter your email"
-            />
-          </div>
-      </div>
+  const handleInputChange = (index: number, field: string, value: any) => {
+    const newData = editorData.map((row, i) =>
+      i === index ? { ...row, [field]: value } : row
     );
-  }
+    setEditorData(newData);
+    onDataChange(newData);
+  };
+
+  const handleSave = async () => {
+    if (userEmail) {
+      const { error } = await supabase
+        .from("chart_data")
+        .upsert({ email: userEmail, values: editorData }, { onConflict: "email" }); // Corrected column name
+
+      if (error) {
+        console.error("Error saving data:", error.message);
+      } else {
+        alert("Data saved successfully!");
+      }
+    } else {
+      alert("Please enter your email to save data.");
+    }
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentEmailInput(e.target.value);
+  };
+
+  const handleFetchData = () => {
+    setUserEmail(currentEmailInput);
+  };
+
+  const handleEmailKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleFetchData();
+    }
+  };
 
   return (
-    <div className="chart-editor">
-                <div className="email-input-container">
-            <label htmlFor="userEmail">Your Email:</label>
-            <input
-              type="email"
-              id="userEmail"
-              value={userEmail || ''}
-              onChange={(e) => setUserEmail(e.target.value)}
-              placeholder="Enter your email to customize charts"
-            />
-          </div>
-
-      <h3>Customize {chartName}</h3>
-      <textarea
-      style={{width:"250px"}}
-        value={customValues}
-        onChange={(e) => setCustomValues(e.target.value)}
-        rows={10}
-        cols={50}
-      />
-      <button className="bg-[]" style={{backgroundColor:"#00c896"}} onClick={handleSaveValues}>Save Custom Values</button>
-      {message && <p>{message}</p>}
+    <div className="chart-data-editor">
+      <h3>{chartName} Data Editor</h3>
+      <div className="email-input-container">
+        <label htmlFor="editorUserEmail">Your Email:</label>
+        <input
+          type="email"
+          id="editorUserEmail"
+          value={currentEmailInput}
+          onChange={handleEmailChange}
+          onKeyDown={handleEmailKeyDown}
+          onBlur={handleFetchData}
+          placeholder="Enter your email to customize charts"
+        />
+        <button onClick={handleFetchData}>Fetch Data</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Value</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {editorData.map((row, index) => (
+            <tr key={index}>
+              <td>
+                <input
+                  type="text"
+                  value={row.name}
+                  onChange={(e) =>
+                    handleInputChange(index, "name", e.target.value)
+                  }
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  value={row.value}
+                  onChange={(e) =>
+                    handleInputChange(index, "value", parseInt(e.target.value))
+                  }
+                />
+              </td>
+              <td>
+                <button onClick={() => handleRemoveRow(index)}>-</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <button onClick={handleAddRow}>Add Row</button>
+      <button onClick={handleSave}>Save Data</button>
     </div>
   );
 };
