@@ -102,10 +102,11 @@ const ChartDataEditor: React.FC<ChartDataEditorProps> = ({
   return (
     <div className="chart-data-editor">
       <h3>{chartName} Data Editor</h3>
-      <div className="email-input-container">
-        <label htmlFor="editorUserEmail">Your Email:</label>
+      <div  className="email-input-container">
+        <label  htmlFor="editorUserEmail">Your Email:</label>
         <input
           type="email"
+          style={{padding:"8px"}}
           id="editorUserEmail"
           value={currentEmailInput}
           onChange={handleEmailChange}
@@ -113,7 +114,7 @@ const ChartDataEditor: React.FC<ChartDataEditorProps> = ({
           onBlur={handleFetchData}
           placeholder="Enter your email to customize charts"
         />
-        <button onClick={handleFetchData}>Fetch Data</button>
+        <button style={{padding:"8px",marginLeft:'4px'}} onClick={handleFetchData}>Fetch Data</button>
       </div>
       <table>
         <thead>
@@ -151,8 +152,11 @@ const ChartDataEditor: React.FC<ChartDataEditorProps> = ({
           ))}
         </tbody>
       </table>
-      <button onClick={handleAddRow}>Add Row</button>
-      <button onClick={handleSave}>Save Data</button>
+      <div style={{display:"flex", justifyContent:'space-between', marginTop:'5px'}}>
+          <button onClick={handleAddRow}>Add Row</button>
+          <button style={{background:'#00c896'}} onClick={handleSave}>Save Data</button>
+
+      </div>
     </div>
   );
 };
